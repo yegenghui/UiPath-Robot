@@ -1,0 +1,459 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="Main_1"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:ga="clr-namespace:GoogleSpreadsheet.Activities;assembly=GoogleSpreadsheet.Activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:sc="clr-namespace:System.Collections;assembly=mscorlib"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.IntelligentOCR</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Flowchart sap2010:WorkflowViewState.IdRef="Flowchart_1">
+    <Flowchart.Variables>
+      <Variable x:TypeArguments="x:String" Name="emailBodyData" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dt" />
+      <Variable x:TypeArguments="x:Int32" Name="number" />
+    </Flowchart.Variables>
+    <Flowchart.StartNode>
+      <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_18">
+        <Sequence sap2010:Annotation.AnnotationText="①Read range (B4:O10000)data from Google spreadsheet.&#xA;②Creating the mail body if the 発注日 is empty.Delete the record if the '発注日' is before 3 months ago.&#xA;③Update 発注日 as current date(yyyy/mm/dd)" DisplayName="Google Sheet data process " sap2010:WorkflowViewState.IdRef="Sequence_24">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="sc:ArrayList" Name="listToDelete" />
+          </Sequence.Variables>
+          <ga:GoogleSheetApplicationScope DisplayName="Google sheet application scope" sap2010:WorkflowViewState.IdRef="GoogleSheetApplicationScope_2" KeyPath="C:\cutomer\business_card\uipathbusinesscard-4eef90e3b728.p12" Password="notasecret" ServiceAccountEmail="yegenghui@uipathbusinesscard.iam.gserviceaccount.com" SpreadsheetId="1V9GDRUbhslSwudi0CX0umYCTCJclMB6QZGTrQseIVm0">
+            <ga:GoogleSheetApplicationScope.Body>
+              <ActivityAction x:TypeArguments="ga:GoogleSheetProperty">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="ga:GoogleSheetProperty" Name="GoogleSheetScope" />
+                </ActivityAction.Argument>
+                <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_23">
+                  <ga:ReadRange sap2010:Annotation.AnnotationText="Read the data and store into dt(variable)" DisplayName="Read range" sap2010:WorkflowViewState.IdRef="ReadRange_2" IncludeHeaders="True" Range="B4:O10000" Result="[dt]" Sheet="Sheet1" />
+                  <Sequence DisplayName="Data process" sap2010:WorkflowViewState.IdRef="Sequence_31">
+                    <Assign DisplayName="代入" sap2010:WorkflowViewState.IdRef="Assign_16">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[number]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">1</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign DisplayName="代入" sap2010:WorkflowViewState.IdRef="Assign_17">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[emailBodyData]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">
+                          <Literal x:TypeArguments="x:String" Value="" />
+                        </InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign DisplayName="代入" sap2010:WorkflowViewState.IdRef="Assign_25">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="sc:ArrayList">[listToDelete]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="sc:ArrayList">[new ArrayList()]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[dt]" DisplayName="繰り返し (各行)" sap2010:WorkflowViewState.IdRef="ForEachRow_5">
+                      <ui:ForEachRow.Body>
+                        <ActivityAction x:TypeArguments="sd:DataRow">
+                          <ActivityAction.Argument>
+                            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                          </ActivityAction.Argument>
+                          <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_30">
+                            <If Condition="[String.IsNullOrEmpty(row(&quot;発注日&quot;).ToString)]" DisplayName="条件分岐" sap2010:WorkflowViewState.IdRef="If_3">
+                              <If.Then>
+                                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_29">
+                                  <If Condition="[String.IsNullOrEmpty(row(&quot;姓&quot;).ToString) Or String.IsNullOrEmpty(row(&quot;名&quot;).ToString) Or String.IsNullOrEmpty(row(&quot;希望数量&quot;).ToString) Or String.IsNullOrEmpty(row(&quot;Job Title&quot;).ToString) Or String.IsNullOrEmpty(row(&quot;Last Name&quot;).ToString) Or String.IsNullOrEmpty(row(&quot;First Name&quot;).ToString) Or String.IsNullOrEmpty(row(&quot;Phone&quot;).ToString) Or String.IsNullOrEmpty(row(&quot;Email&quot;).ToString)]" DisplayName="条件分岐" sap2010:WorkflowViewState.IdRef="If_4">
+                                    <If.Then>
+                                      <Sequence sap2010:Annotation.AnnotationText="If any error &#xA;①Put &quot;無効入力&quot; into the 発注日 column.&#xA;②Send mail to the user if the email address is not empty and the people who input the data." DisplayName="シーケンス" sap2010:WorkflowViewState.IdRef="Sequence_33">
+                                        <Sequence.Variables>
+                                          <Variable x:TypeArguments="x:String" Name="wrongInputMailList" />
+                                        </Sequence.Variables>
+                                        <Assign DisplayName="代入" sap2010:WorkflowViewState.IdRef="Assign_21">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:Object">[row("発注日")]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:Object">["無効入力"]</InArgument>
+                                          </Assign.Value>
+                                        </Assign>
+                                        <Assign DisplayName="代入" sap2010:WorkflowViewState.IdRef="Assign_22">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:String">[wrongInputMailList]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:String">[row("記入者メールアドレス").ToString]</InArgument>
+                                          </Assign.Value>
+                                        </Assign>
+                                        <If Condition="[String.IsNullOrEmpty(row(&quot;Email&quot;).ToString)]" DisplayName="条件分岐" sap2010:WorkflowViewState.IdRef="If_5">
+                                          <If.Else>
+                                            <Assign DisplayName="代入" sap2010:WorkflowViewState.IdRef="Assign_23">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="x:String">[wrongInputMailList]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="x:String">[wrongInputMailList + ";" + row("Email").ToString]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                          </If.Else>
+                                        </If>
+                                        <WriteLine DisplayName="1 行を書き込み" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[wrongInputMailList]" />
+                                        <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Body="[&quot;お疲れ様です。&quot; + Environment.NewLine + &quot;名刺発注のGoogle Sheetについて、ただいま、誤入力を検出しております。(入力が誤りある場合、発注日は'無効入力'と表示します)&quot; + Environment.NewLine + &quot;ご確認お願い致します。&quot;]" DisplayName="Outlook メールメッセージを送信" sap2010:WorkflowViewState.IdRef="SendOutlookMail_4" IsBodyHtml="False" IsDraft="False" Subject="名刺発注のGoogle Sheetの誤記入" To="[wrongInputMailList]">
+                                          <ui:SendOutlookMail.Files>
+                                            <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+                                          </ui:SendOutlookMail.Files>
+                                        </ui:SendOutlookMail>
+                                      </Sequence>
+                                    </If.Then>
+                                    <If.Else>
+                                      <Sequence DisplayName="シーケンス" sap2010:WorkflowViewState.IdRef="Sequence_32">
+                                        <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:String">[emailBodyData]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:String" xml:space="preserve">[emailBodyData +  Environment.NewLine + number.ToString + "." + row("姓").ToString + "  " + row("名").ToString + Environment.NewLine + "スタンダード マシュマロCoC 両面 カラー/カラー  " + row("希望数量").ToString+ "00枚" + Environment.NewLine + Environment.NewLine + row("Job Title").ToString + Environment.NewLine + row("姓").ToString+ "  " + row("名").ToString + Environment.NewLine + row("Last Name").ToString+ "  " + row("First Name").ToString + Environment.NewLine + Environment.NewLine + "携帯：" + row("Phone").ToString + Environment.NewLine + row("Email").ToString + Environment.NewLine]</InArgument>
+                                          </Assign.Value>
+                                        </Assign>
+                                        <Assign sap2010:WorkflowViewState.IdRef="Assign_19">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:Object">[row("発注日")]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:Object">[now.ToString("yyyy/MM/dd")]</InArgument>
+                                          </Assign.Value>
+                                        </Assign>
+                                        <Assign sap2010:WorkflowViewState.IdRef="Assign_20">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:Int32">[number]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:Int32">[number + 1]</InArgument>
+                                          </Assign.Value>
+                                        </Assign>
+                                      </Sequence>
+                                    </If.Else>
+                                  </If>
+                                  <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" Buttons="Ok" DisplayName="Message box" sap2010:WorkflowViewState.IdRef="MessageBox_3" Text="[emailBodyData]" TopMost="True" />
+                                </Sequence>
+                              </If.Then>
+                              <If.Else>
+                                <Sequence DisplayName="Keep record which within 3 monthes" sap2010:WorkflowViewState.IdRef="Sequence_35">
+                                  <If Condition="[row(&quot;発注日&quot;).ToString.Equals(&quot;無効入力&quot;)]" DisplayName="条件分岐" sap2010:WorkflowViewState.IdRef="If_7">
+                                    <If.Else>
+                                      <If Condition="[DateTime.Now.AddMonths(-3).CompareTo(Convert.ToDateTime(row(&quot;発注日&quot;))) &lt; 0]" DisplayName="条件分岐" sap2010:WorkflowViewState.IdRef="If_6">
+                                        <If.Else>
+                                          <Sequence DisplayName="シーケンス" sap2010:WorkflowViewState.IdRef="Sequence_36">
+                                            <InvokeMethod DisplayName="メソッドを呼び出し" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Add">
+                                              <InvokeMethod.TargetObject>
+                                                <InArgument x:TypeArguments="sc:ArrayList">[listToDelete]</InArgument>
+                                              </InvokeMethod.TargetObject>
+                                              <InArgument x:TypeArguments="x:Int32">[dt.Rows.IndexOf(row)]</InArgument>
+                                            </InvokeMethod>
+                                          </Sequence>
+                                        </If.Else>
+                                      </If>
+                                    </If.Else>
+                                  </If>
+                                </Sequence>
+                              </If.Else>
+                            </If>
+                          </Sequence>
+                        </ActivityAction>
+                      </ui:ForEachRow.Body>
+                    </ui:ForEachRow>
+                  </Sequence>
+                  <InvokeMethod sap2010:Annotation.AnnotationText="Reverse the list ,so we can delete from the last item then add an empty row.Thus we can delete the data correctly" DisplayName="メソッドを呼び出し" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="Reverse">
+                    <InvokeMethod.TargetObject>
+                      <InArgument x:TypeArguments="sc:ArrayList">[listToDelete]</InArgument>
+                    </InvokeMethod.TargetObject>
+                  </InvokeMethod>
+                  <ui:ForEach x:TypeArguments="x:Int32" CurrentIndex="{x:Null}" DisplayName="繰り返し (コレクションの各要素)" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[listToDelete]">
+                    <ui:ForEach.Body>
+                      <ActivityAction x:TypeArguments="x:Int32">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="x:Int32" Name="item" />
+                        </ActivityAction.Argument>
+                        <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_37">
+                          <ui:RemoveDataRow Row="{x:Null}" DataTable="[dt]" DisplayName="データ行を削除" sap2010:WorkflowViewState.IdRef="RemoveDataRow_2" RowIndex="[item]" />
+                          <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;}]" DataTable="[dt]" DisplayName="データ行を追加" sap2010:WorkflowViewState.IdRef="AddDataRow_3" />
+                        </Sequence>
+                      </ActivityAction>
+                    </ui:ForEach.Body>
+                  </ui:ForEach>
+                  <ga:WriteRange DataTable="[dt]" DisplayName="Write range" sap2010:WorkflowViewState.IdRef="WriteRange_3" IncludeHeaders="True" SheetName="Sheet1" StartingCell="B4" />
+                </Sequence>
+              </ActivityAction>
+            </ga:GoogleSheetApplicationScope.Body>
+          </ga:GoogleSheetApplicationScope>
+        </Sequence>
+        <FlowStep.Next>
+          <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_19">
+            <Sequence DisplayName="Send out Email" sap2010:WorkflowViewState.IdRef="Sequence_25">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Default="[&quot;あっとめいし渋谷店　御中&quot; + Environment.NewLine +  &quot;いつも大変お世話になっております。&quot; + Environment.NewLine + &quot;UiPath南です。&quot; + Environment.NewLine +  Environment.NewLine + &quot;名刺発注依頼いたしますので、ご対応のほどお願いいたします。&quot; +  Environment.NewLine + &quot;原稿できましたらお送りくださいませ。&quot; +  Environment.NewLine]" Name="prefix" />
+                <Variable x:TypeArguments="x:String" Default="[Environment.NewLine + &quot;何卒よろしくお願い申し上げます。&quot; + Environment.NewLine  + &quot;Best regards,&quot; + Environment.NewLine +  Environment.NewLine + &quot;Ryosuke Minami  南　良輔&quot; + Environment.NewLine + &quot;HR Admin   人事総務担当&quot; + Environment.NewLine + &quot;Mob.: +81 (0)70-4506-6023&quot; + Environment.NewLine +&quot;Email: ryosuke.minami@uipath.com&quot; + Environment.NewLine +&quot;UiPath KK  UiPath株式会社&quot; + Environment.NewLine + &quot;Address:SPACES Ground Floor, Otemachi Building, &quot; + Environment.NewLine +&quot;1-6-1 Otemachi Chiyoda-ku 100-0004 Tokyo Japan&quot;]" Name="suffix" />
+              </Sequence.Variables>
+              <If Condition="[number = 1]" DisplayName="条件分岐" sap2010:WorkflowViewState.IdRef="If_8">
+                <If.Else>
+                  <Sequence DisplayName="シーケンス" sap2010:WorkflowViewState.IdRef="Sequence_38">
+                    <Assign DisplayName="代入" sap2010:WorkflowViewState.IdRef="Assign_24">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[emailBodyData]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[prefix + emailBodyData + suffix]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" sap2010:Annotation.AnnotationText="to : shibuya@atmeishi.com&#xA;cc :ryosuke.minami@uipath.com,koji.hamane@uipath.com&#xA;" Body="[emailBodyData]" DisplayName="Outlook メールメッセージを送信" sap2010:WorkflowViewState.IdRef="SendOutlookMail_3" IsBodyHtml="False" IsDraft="False" Subject="名刺発注" To="genghui.ye@uipath.com">
+                      <ui:SendOutlookMail.Files>
+                        <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+                      </ui:SendOutlookMail.Files>
+                    </ui:SendOutlookMail>
+                  </Sequence>
+                </If.Else>
+              </If>
+            </Sequence>
+          </FlowStep>
+        </FlowStep.Next>
+      </FlowStep>
+    </Flowchart.StartNode>
+    <x:Reference>__ReferenceID0</x:Reference>
+    <x:Reference>__ReferenceID1</x:Reference>
+    <sads:DebugSymbol.Symbol>d05DOlxVc2Vyc1x5ZS5nZW5naHVpXERvY3VtZW50c1xVaVBhdGhcVWlQYXRoX2J1c2luZXNzX2NhcmRfYXV0b21hdGlvblxNYWluLnhhbWxgRQOcAg8CAQFNCfkBFAIBFfwBDZQCGAIBAlEL+AEsAgEW/gE+/gHoAgIBBP8BPv8BjwUCAQOBAg+TAhQCAQVR6AFR9AECAXtRzgJR/AICAXpRiQJRvwICAXlRoAFR3gECAXhXEfUBHAIBF4ECHYECKwIBBoMCE5ECHgIBCFgTWP0BAgFzWRPhAR4CAS3iARPmASICASrnARPzASACAR30ARP0AbkBAgEYhAIViwIeAgEOjAIVkAIqAgEJWOUBWOsBAgF2WPIBWPoBAgF1WNIBWN0BAgF0WhVhHgIBb2IVax4CAWtsFXMeAgFndBXgASUCAS7kAULkAVACASvnAaYB5wG2AQIBKO0BGfABJAIBHvQBsgH0AbYBAgEc9AEs9AEyAgEa9AGcAfQBpAECARmJAkCJAmECARGGAkGGAlACAQ+MAqMDjAK6AwIBDYwChgKMApcCAgELjAKZA4wCnwMCAQpfP19AAgFyXEBcSAIBcGgbaEoCAW5kQWRQAgFscURxVQIBam5FblMCAWh0RnRMAgFlehvdASYCAS/uARvuAakBAgEj7wEb7wHaAgIBH3sd3AEiAgEw7gGeAe4BpgECASbuAUbuAUwCASTvAYwC7wGSAgIBIe8BRu8BgQICASB7K3tiAgExfSHGASwCATzJASHaASwCATJ+I8QBKAIBQMUBI8UB2wECAT3KASPZASgCATN+MX79AwIBQYABJ6YBMgIBT6kBJ8IBMgIBQsUBuAHFAckBAgE+ygExygFrAgE0zAEn1wEsAgE1hAEpiwEyAgFijAEpkwEyAgFelAEpnwEuAgFYoAEpoAGXAQIBVaEBKaUBPgIBUKoBKbEBMgIBS7IBKbkBMgIBSLoBKcEBMgIBQ8wBNcwBjgECATbOASvVATYCATeJAVSJAVwCAWSGAVWGAWECAWORAVSRAXACAWGOAVWOAWkCAV+UATeUAXACAVmWAS2dATYCAVqgAX6gAZQBAgFWoQHrA6EBgQQCAVOhAZ4BoQHOAgIBUqEB0AOhAecDAgFRrAFVrAFkAgFMtwFUtwFwAgFKtAFVtAFhAgFJvwFTvwFfAgFGvAFUvAFcAgFEzwEt1AE8AgE4mwFYmwGKAQIBXZgBWZgBbQIBW9MBVdMBawIBO9EBXNEBagIBOQ==</sads:DebugSymbol.Symbol>
+  </Flowchart>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="ReadRange_2" sap:VirtualizedContainerService.HintSize="1540.66666666667,67.3333333333333">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_16" sap:VirtualizedContainerService.HintSize="1518.66666666667,62" />
+      <sap2010:ViewStateData Id="Assign_17" sap:VirtualizedContainerService.HintSize="1518.66666666667,62" />
+      <sap2010:ViewStateData Id="Assign_25" sap:VirtualizedContainerService.HintSize="1518.66666666667,62" />
+      <sap2010:ViewStateData Id="Assign_21" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="Assign_22" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="Assign_23" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="464,216" />
+      <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="464,62.6666666666667" />
+      <sap2010:ViewStateData Id="SendOutlookMail_4" sap:VirtualizedContainerService.HintSize="464,149.333333333333" />
+      <sap2010:ViewStateData Id="Sequence_33" sap:VirtualizedContainerService.HintSize="486,914.666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_18" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="Assign_19" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="Assign_20" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="Sequence_32" sap:VirtualizedContainerService.HintSize="264,390">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="776,1068.66666666667" />
+      <sap2010:ViewStateData Id="MessageBox_3" sap:VirtualizedContainerService.HintSize="776,58.6666666666667" />
+      <sap2010:ViewStateData Id="Sequence_29" sap:VirtualizedContainerService.HintSize="798,1291.33333333333">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeMethod_1" sap:VirtualizedContainerService.HintSize="217.333333333333,137.333333333333" />
+      <sap2010:ViewStateData Id="Sequence_36" sap:VirtualizedContainerService.HintSize="239.333333333333,261.333333333333">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="464,415.333333333333" />
+      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="620,569.333333333333" />
+      <sap2010:ViewStateData Id="Sequence_35" sap:VirtualizedContainerService.HintSize="642,693.333333333333">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="1466,1445.33333333333" />
+      <sap2010:ViewStateData Id="Sequence_30" sap:VirtualizedContainerService.HintSize="1488,1569.33333333333">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEachRow_5" sap:VirtualizedContainerService.HintSize="1518.66666666667,1722" />
+      <sap2010:ViewStateData Id="Sequence_31" sap:VirtualizedContainerService.HintSize="1540.66666666667,2152">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeMethod_2" sap:VirtualizedContainerService.HintSize="1540.66666666667,216">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="RemoveDataRow_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="AddDataRow_3" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_37" sap:VirtualizedContainerService.HintSize="222,208">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="1540.66666666667,346.666666666667" />
+      <sap2010:ViewStateData Id="WriteRange_3" sap:VirtualizedContainerService.HintSize="1540.66666666667,22" />
+      <sap2010:ViewStateData Id="Sequence_23" sap:VirtualizedContainerService.HintSize="1562.66666666667,3088">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GoogleSheetApplicationScope_2" sap:VirtualizedContainerService.HintSize="1576.66666666667,3200">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_24" sap:VirtualizedContainerService.HintSize="200,214.666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_24" sap:VirtualizedContainerService.HintSize="314,62" />
+      <sap2010:ViewStateData Id="SendOutlookMail_3" sap:VirtualizedContainerService.HintSize="314,228">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_38" sap:VirtualizedContainerService.HintSize="336,454">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="492,608" />
+      <sap2010:ViewStateData Id="Sequence_25" sap:VirtualizedContainerService.HintSize="200,52.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_19">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">190,403.666666666667</av:Point>
+            <av:Size x:Key="ShapeSize">200,52.6666666666667</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_18">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">190,123.666666666667</av:Point>
+            <av:Size x:Key="ShapeSize">200,214.666666666667</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">290,338.333333333334 290,403.666666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="794,642">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">260,12.6666666666667</av:Point>
+            <av:Size x:Key="ShapeSize">60,74.6666666666667</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">290,87.3333333333334 290,123.666666666667</av:PointCollection>
+            <x:Double x:Key="Width">780.33333333333337</x:Double>
+            <x:Double x:Key="Height">606.33333333333326</x:Double>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Main_1" sap:VirtualizedContainerService.HintSize="834,722" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
